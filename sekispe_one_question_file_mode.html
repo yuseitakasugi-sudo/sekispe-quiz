@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>セキスペ一問一答 β</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f5f6f8;margin:0;color:#111}
+.wrap{max-width:680px;margin:auto;padding:20px 14px}
+.card{background:#fff;border-radius:20px;padding:22px;box-shadow:0 3px 16px rgba(0,0,0,.08)}
+.badge{display:inline-block;background:#eef2ff;padding:6px 10px;border-radius:999px;font-size:13px}
+h1{font-size:23px;margin:13px 0 6px}.meta{color:#666;font-size:13px}
+.q{font-size:18px;line-height:1.8;margin:22px 0}
+textarea{width:100%;min-height:120px;border:1px solid #d8d8d8;border-radius:12px;padding:12px;font-size:16px;resize:none}
+button{width:100%;border:0;border-radius:12px;padding:14px;margin-top:12px;font-size:16px}
+.primary{background:#111;color:#fff}.secondary{background:#eee}
+.answer{display:none;border-top:1px solid #eee;margin-top:22px;padding-top:20px;line-height:1.7}
+.score{font-weight:bold;font-size:18px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="card">
+<span class="badge">情報処理安全確保支援士・午後</span>
+<h1>セキスペ一問一答 β</h1>
+<div class="meta">令和7年度 春期・午後（要約問題）</div>
+
+<div class="q">
+SBOMを利用すると、脆弱性が公表された際に、どのようなことが容易になるか。
+</div>
+
+<textarea id="answerInput" placeholder="ここに自分の回答を書いてください"></textarea>
+
+<button class="primary" id="showAnswer">回答を見る</button>
+
+<div class="answer" id="modelAnswer">
+<div class="score">模範解答・採点ポイント</div>
+<p>利用しているソフトウェアやそのバージョンを明確にし、脆弱性の影響有無を把握しやすくする。</p>
+
+<p><strong>ポイント</strong></p>
+<ul>
+<li>利用しているソフトウェアを把握できる</li>
+<li>バージョンを把握できる</li>
+<li>脆弱性の影響有無を確認しやすい</li>
+</ul>
+
+<button class="secondary" id="again">もう一度考える</button>
+</div>
+</div>
+</div>
+
+<script>
+(function(){
+  var show = document.getElementById("showAnswer");
+  var model = document.getElementById("modelAnswer");
+  var again = document.getElementById("again");
+
+  show.onclick = function(){
+    model.style.display = "block";
+    show.style.display = "none";
+  };
+
+  again.onclick = function(){
+    model.style.display = "none";
+    show.style.display = "block";
+  };
+})();
+</script>
+</body>
+</html>
