@@ -63,7 +63,7 @@ h1{margin:0 0 5px}.lead{font-size:13px;line-height:1.75;color:var(--muted)}
 <div class="related" id="related"></div></div>
 <div id="src" style="font-size:10px;color:#888;margin-bottom:10px"></div>
 <div class="scorebox"><div class="scoreline"><div><div class="scorebig" id="score">0 / 100点</div><div class="scoremeta"><span id="rate">正答率 0.0%</span>　<span id="answered">採点済み 0/30</span></div></div><div id="currentPoints" class="badge">この問題：3点</div></div>
-<div class="markrow"><button class="markbtn" id="m○">○ 正解</button><button class="markbtn" id="m△">△ 部分正解</button><button class="markbtn" id="m×">× 不正解</button></div><div class="markhint" id="markstatus">未採点　｜　○=満点、△=半分、×=0点</div></div>
+<div class="markrow"><button class="markbtn" id="m○">○ 正解</button><button class="markbtn" id="m△">△ 部分正解</button><button class="markbtn" id="m×">× 不正解</button></div><div class="markhint" id="markstatus">未採点　｜　○=満点、△=半分、×=0点</div></div><div id="quickReview" style="display:none;margin-top:8px"><button class="reviewBtn primaryReview" onclick="reviewCurrent()">この問題を今すぐ復習する</button></div>
 <button class="primary" id="reveal" style="margin-top:10px">回答を見る</button>
 <div class="answer" id="answer"><div class="label">模範解答</div><div class="model" id="model"></div><div class="label" style="margin-top:13px">解説</div><div class="lesson" id="explain"></div></div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:11px"><button class="secondary" id="prev">← 前の問題</button><button class="primary" id="next">次の問題 →</button></div>
@@ -115,19 +115,22 @@ function isComplete(t,mi){
  const m=t==="past"?PAST[mi]:SIM[mi];
  return m.every((q,qi)=>!!ST[t].marks[`${t}-${mi}-${qi}`]);
 }
+function hasBad(t,mi){
+ return mockReview(t,mi).length>0;
+}
 function renderReviewPanel(){
- let html='<div class="reviewCard"><div class="reviewTitle">🔁 復習対象</div><div class="reviewMeta">模試を30問すべて自己採点すると、△・×だけを自動抽出できます。</div>';
+ let html='<div class="reviewCard"><div class="reviewTitle">🔁 復習対象</div><div class="reviewMeta">各問題を自己採点した時点で△・×が復習対象になります。模試完了を待つ必要はありません。</div>';
  let any=false;
  [["past",PAST.length,"過去問模試"],["similar",SIM.length,"類題模試"]].forEach(([t,n,label])=>{
    for(let i=0;i<n;i++){
-     if(!isComplete(t,i)) continue;
      const bad=mockReview(t,i);
      if(!bad.length) continue;
      any=true;
-     html+=`<div class="reviewItem"><b>${label}${i+1}：復習 ${bad.length}問</b><span>× ${bad.filter(x=>x.mk==="×").length}問 ／ △ ${bad.filter(x=>x.mk==="△").length}問</span><button onclick="startReview('${t}',${i})">△・×だけ復習する</button></div>`;
+     const complete=isComplete(t,i)?"｜模試完了":"｜進行中";
+     html+=`<div class="reviewItem"><b>${label}${i+1}：復習 ${bad.length}問</b><span>× ${bad.filter(x=>x.mk==="×").length}問 ／ △ ${bad.filter(x=>x.mk==="△").length}問 ${complete}</span><button onclick="startReview('${t}',${i})">△・×だけ復習する</button></div>`;
    }
  });
- if(!any) html+='<div style="font-size:11px;color:#777;margin-top:8px">まだ復習対象はありません。模試を最後まで自己採点すると、ここに表示されます。</div>';
+ if(!any) html+='<div style="font-size:11px;color:#777;margin-top:8px">まだ復習対象はありません。△または×で自己採点すると、ここに即時追加されます。</div>';
  html+='</div>';
  $("reviewPanel").innerHTML=html;
 }
@@ -198,6 +201,7 @@ function render(){
  $("related").textContent=`関連分野：${q.category||q.tag||""}`;
  ["○","△","×"].forEach(v=>$("m"+v).classList.toggle("active",mk===v));
  $("markstatus").textContent=mk?`現在の自己採点：${mk}`:"未採点";
+$("quickReview").style.display=(mk==="△"||mk==="×")&&!app.reviewOnly?"block":"none";
  if(app.type==="past"&&q.source_url){$("src").innerHTML=`出典：${q.year}・${q.src} ｜ <b>${q.points}点</b><br><a class="sourcebtn" href="${q.source_url}" target="_blank" rel="noopener">↗ 原典PDF（直接開く）</a>`}
  else{$("src").innerHTML=`<span class="badge2">新規作成の類題</span>　<b>${q.points}点</b>`}
 }
@@ -232,7 +236,11 @@ function move(d){
  ST[app.type].lastVisited[app.mi]=app.qi;
  save();render();
 }
-function setMark(v){ST[app.type].marks[key(app.qi)]=v;save();render();if(!app.reviewOnly)renderReviewPanel()}
+function setMark(v){
+ ST[app.type].marks[key(app.qi)]=v;
+ save();render();
+ if(!app.reviewOnly)renderReviewPanel();
+}
 function showResult(completed=false){
  const z=score(app.mi);
  $("resultTitle").textContent=`${app.type==="past"?"過去問模試":"類題模試"}${app.mi+1} 結果`;
