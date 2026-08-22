@@ -13,9 +13,12 @@
       --muted: #6b7280;
       --line: #e5e7eb;
       --accent: #111827;
-      --ok: #166534;
-      --ng: #991b1b;
-      --mid: #92400e;
+      --ok-bg: #dcfce7;
+      --ok-text: #166534;
+      --mid-bg: #fef3c7;
+      --mid-text: #92400e;
+      --ng-bg: #fee2e2;
+      --ng-text: #991b1b;
     }
 
     * { box-sizing: border-box; }
@@ -27,21 +30,28 @@
       color: var(--text);
     }
 
-    header {
-      min-height: 58px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 16px;
-      background: var(--panel);
-      border-bottom: 1px solid var(--line);
-      position: sticky;
-      top: 0;
-      z-index: 10;
+    .wrap {
+      width: min(760px, 100%);
+      margin: 0 auto;
+      padding: 18px 14px 40px;
     }
 
-    header strong {
-      white-space: nowrap;
+    h1 {
+      font-size: 24px;
+      margin: 0 0 16px;
+    }
+
+    h2 {
+      font-size: 18px;
+      margin: 0;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 14px;
     }
 
     select, input, textarea, button, a.button {
@@ -49,22 +59,54 @@
     }
 
     select, input {
-      height: 38px;
+      width: 100%;
+      min-height: 46px;
       border: 1px solid var(--line);
-      border-radius: 8px;
+      border-radius: 10px;
       background: #fff;
-      padding: 0 10px;
+      color: var(--text);
+      padding: 0 12px;
     }
 
-    #examSelect {
-      min-width: 230px;
-      max-width: 420px;
+    textarea {
+      width: 100%;
+      min-height: 190px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 12px;
+      line-height: 1.6;
+      color: var(--text);
+      background: #fff;
+    }
+
+    textarea.memo {
+      min-height: 100px;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      outline: 2px solid #e5e7eb;
+      border-color: #9ca3af;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 7px;
+    }
+
+    .top-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
     }
 
     button, a.button {
-      min-height: 38px;
+      min-height: 46px;
       border: 1px solid var(--line);
-      border-radius: 8px;
+      border-radius: 10px;
       background: #fff;
       color: var(--text);
       padding: 0 12px;
@@ -73,62 +115,13 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      white-space: nowrap;
+      font-weight: 600;
     }
-
-    button:hover, a.button:hover { background: #f3f4f6; }
 
     .primary {
       background: var(--accent);
-      color: #fff;
+      color: #fff !important;
       border-color: var(--accent);
-    }
-
-    .primary:hover { background: #000; }
-
-    main {
-      display: grid;
-      grid-template-columns: minmax(0, 1.5fr) minmax(320px, .8fr);
-      gap: 12px;
-      padding: 12px;
-      height: calc(100vh - 59px);
-    }
-
-    .panel {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      overflow: hidden;
-      min-height: 0;
-    }
-
-    .pdf-panel {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .pdf-toolbar {
-      min-height: 44px;
-      padding: 10px 12px;
-      border-bottom: 1px solid var(--line);
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-
-    iframe {
-      border: 0;
-      width: 100%;
-      flex: 1;
-      background: #eee;
-    }
-
-    .answer-panel {
-      display: flex;
-      flex-direction: column;
-      padding: 14px;
-      gap: 12px;
-      overflow: auto;
     }
 
     .row {
@@ -142,32 +135,23 @@
       min-width: 0;
     }
 
-    label {
-      font-size: 13px;
-      font-weight: 600;
+    .row button {
+      flex: 0 0 auto;
     }
 
-    textarea {
-      width: 100%;
-      min-height: 260px;
-      resize: vertical;
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      padding: 12px;
-      line-height: 1.6;
-      outline: none;
+    .section {
+      margin-top: 14px;
     }
 
-    textarea:focus, input:focus, select:focus {
-      border-color: #9ca3af;
-      outline: 2px solid #e5e7eb;
-      outline-offset: 1px;
+    .section:first-child {
+      margin-top: 0;
     }
 
     .save-state {
       font-size: 12px;
       color: var(--muted);
       margin-left: auto;
+      font-weight: 400;
     }
 
     .score-group {
@@ -176,215 +160,265 @@
       gap: 8px;
     }
 
-    .score {
-      font-weight: 700;
-    }
-
     .score.active.good {
-      background: #dcfce7;
+      background: var(--ok-bg);
+      color: var(--ok-text);
       border-color: #86efac;
-      color: var(--ok);
     }
 
     .score.active.mid {
-      background: #fef3c7;
+      background: var(--mid-bg);
+      color: var(--mid-text);
       border-color: #fcd34d;
-      color: var(--mid);
     }
 
     .score.active.bad {
-      background: #fee2e2;
+      background: var(--ng-bg);
+      color: var(--ng-text);
       border-color: #fca5a5;
-      color: var(--ng);
     }
 
     .meta {
-      font-size: 12px;
       color: var(--muted);
+      font-size: 12px;
       line-height: 1.5;
     }
 
-    .stats {
-      padding: 10px 12px;
-      background: #f9fafb;
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      font-size: 13px;
+    .history-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
     }
 
-    @media (max-width: 900px) {
-      header {
-        flex-wrap: wrap;
-        padding: 10px;
-      }
+    .history-head .count {
+      margin-left: auto;
+      font-size: 12px;
+      color: var(--muted);
+    }
 
-      header strong {
-        width: 100%;
-      }
+    .history {
+      display: grid;
+      gap: 8px;
+    }
 
-      #examSelect {
-        min-width: 0;
-        flex: 1 1 100%;
-        max-width: none;
-      }
+    .history-item {
+      width: 100%;
+      min-height: 58px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 10px;
+      text-align: left;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+    }
 
-      main {
-        height: auto;
-        grid-template-columns: 1fr;
-      }
+    .history-main {
+      min-width: 0;
+    }
 
-      .pdf-panel {
-        height: 60vh;
-      }
+    .history-title {
+      font-size: 14px;
+      font-weight: 700;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
 
-      .answer-panel {
-        min-height: 420px;
-      }
+    .history-sub {
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 12px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .badge {
+      min-width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+    }
+
+    .badge.good { background: var(--ok-bg); color: var(--ok-text); }
+    .badge.mid  { background: var(--mid-bg); color: var(--mid-text); }
+    .badge.bad  { background: var(--ng-bg); color: var(--ng-text); }
+    .badge.none { background: #f3f4f6; color: var(--muted); }
+
+    .empty {
+      color: var(--muted);
+      font-size: 13px;
+      padding: 12px 2px;
+    }
+
+    .danger {
+      color: #b91c1c;
+    }
+
+    @media (max-width: 480px) {
+      .wrap { padding: 14px 12px 32px; }
+      h1 { font-size: 22px; }
+      .top-actions { grid-template-columns: 1fr 1fr; }
+      .score-group button { padding: 0 6px; font-size: 14px; }
     }
   </style>
 </head>
 
 <body>
-  <header>
-    <strong>セキスペ過去問</strong>
+  <main class="wrap">
+    <h1>セキスペ過去問</h1>
 
-    <select id="examSelect" aria-label="過去問を選択"></select>
+    <section class="panel">
+      <label for="examSelect">過去問</label>
+      <select id="examSelect"></select>
 
-    <a id="openPdf" class="button primary" href="#" target="_blank" rel="noopener">
-      問題PDF
-    </a>
-
-    <a id="openAnswer" class="button" href="#" target="_blank" rel="noopener">
-      解答PDF
-    </a>
-  </header>
-
-  <main>
-    <section class="panel pdf-panel">
-      <div class="pdf-toolbar">
-        <span id="pdfTitle">問題PDF</span>
+      <div class="top-actions">
+        <a id="openPdf" class="button primary" href="#" target="_blank" rel="noopener">問題PDF</a>
+        <a id="openAnswer" class="button" href="#" target="_blank" rel="noopener">解答PDF</a>
       </div>
-      <iframe id="pdfFrame" title="IPA 情報処理安全確保支援士 過去問題PDF"></iframe>
     </section>
 
-    <section class="panel answer-panel">
-      <div>
+    <section class="panel">
+      <div class="section">
         <label for="questionId">設問</label>
         <div class="row">
-          <input
-            id="questionId"
-            placeholder="例：問1 設問2(1)"
-            autocomplete="off"
-          />
-          <button id="loadQuestion">切替</button>
+          <input id="questionId" placeholder="例：問1 設問2(1)" autocomplete="off" />
+          <button id="switchQuestion">切替</button>
         </div>
         <div class="meta" style="margin-top:6px">
-          設問名を入力して「切替」。設問ごとに回答を別保存します。
+          設問名ごとに回答を保存します。
         </div>
       </div>
 
-      <div>
+      <div class="section">
         <div class="row">
-          <label for="answer">自分の回答</label>
+          <label for="answer" style="margin:0">自分の回答</label>
           <span id="saveState" class="save-state">自動保存</span>
         </div>
-        <textarea id="answer" placeholder="ここに回答を書く"></textarea>
+        <textarea id="answer" placeholder="ここに回答を書く" style="margin-top:7px"></textarea>
       </div>
 
-      <div>
+      <div class="section">
         <label>自己採点</label>
-        <div class="score-group" style="margin-top:8px">
+        <div class="score-group">
           <button class="score good" data-score="2">○ 正解</button>
           <button class="score mid" data-score="1">△ 部分点</button>
           <button class="score bad" data-score="0">× 不正解</button>
         </div>
       </div>
 
-      <div>
+      <div class="section">
         <label for="memo">復習メモ</label>
-        <textarea id="memo" style="min-height:110px" placeholder="間違えた理由、覚えることなど"></textarea>
+        <textarea id="memo" class="memo" placeholder="間違えた理由、覚えることなど"></textarea>
       </div>
 
-      <div id="stats" class="stats"></div>
-
-      <button id="clearCurrent">この設問の保存内容を削除</button>
-
-      <p class="meta">
-        問題・解答PDF：IPA公式。回答・採点・メモはこの端末のブラウザ内に保存されます。
-      </p>
+      <div class="section">
+        <button id="clearCurrent" class="danger" style="width:100%">この設問の保存内容を削除</button>
+      </div>
     </section>
+
+    <section class="panel">
+      <div class="history-head">
+        <h2>回答履歴</h2>
+        <span id="historyCount" class="count"></span>
+      </div>
+      <div id="history" class="history"></div>
+    </section>
+
+    <p class="meta">
+      問題・解答PDFはIPA公式。回答・自己採点・メモはこのブラウザ内に保存されます。
+    </p>
   </main>
 
 <script>
   const EXAMS = [
     {
       id: "r07a",
+      short: "令和7秋",
       label: "令和7年度 秋期｜午後",
       question: "https://www.ipa.go.jp/shiken/mondai-kaiotu/nl10bi0000009lh8-att/2025r07a_sc_pm_qs.pdf",
       answer: "https://www.ipa.go.jp/shiken/mondai-kaiotu/nl10bi0000009lh8-att/2025r07a_sc_pm_ans.pdf"
     },
     {
       id: "r07h",
+      short: "令和7春",
       label: "令和7年度 春期｜午後",
       question: "https://www.ipa.go.jp/shiken/mondai-kaiotu/nl10bi0000009lh8-att/2025r07h_sc_pm_qs.pdf",
       answer: "https://www.ipa.go.jp/shiken/mondai-kaiotu/nl10bi0000009lh8-att/2025r07h_sc_pm_ans.pdf"
     },
     {
       id: "r06a",
+      short: "令和6秋",
       label: "令和6年度 秋期｜午後",
       question: "https://www.ipa.go.jp/shiken/mondai-kaiotu/m42obm000000afqx-att/2024r06a_sc_pm_qs.pdf",
       answer: "https://www.ipa.go.jp/shiken/mondai-kaiotu/m42obm000000afqx-att/2024r06a_sc_pm_ans.pdf"
     },
     {
       id: "r06h",
+      short: "令和6春",
       label: "令和6年度 春期｜午後",
       question: "https://www.ipa.go.jp/shiken/mondai-kaiotu/m42obm000000afqx-att/2024r06h_sc_pm_qs.pdf",
       answer: "https://www.ipa.go.jp/shiken/mondai-kaiotu/m42obm000000afqx-att/2024r06h_sc_pm_ans.pdf"
     },
     {
       id: "r05a",
+      short: "令和5秋",
       label: "令和5年度 秋期｜午後",
       question: "https://www.ipa.go.jp/shiken/mondai-kaiotu/ps6vr70000010d6y-att/2023r05a_sc_pm_qs.pdf",
       answer: "https://www.ipa.go.jp/shiken/mondai-kaiotu/ps6vr70000010d6y-att/2023r05a_sc_pm_ans.pdf"
     },
     {
       id: "r05h",
+      short: "令和5春",
       label: "令和5年度 春期｜午後II",
       question: "https://www.ipa.go.jp/shiken/mondai-kaiotu/ps6vr70000010d6y-att/2023r05h_sc_pm2_qs.pdf",
       answer: "https://www.ipa.go.jp/shiken/mondai-kaiotu/ps6vr70000010d6y-att/2023r05h_sc_pm2_ans.pdf"
     },
     {
       id: "r04a",
+      short: "令和4秋",
       label: "令和4年度 秋期｜午後II",
       question: "https://www.ipa.go.jp/shiken/mondai-kaiotu/gmcbt80000008smf-att/2022r04a_sc_pm2_qs.pdf",
       answer: "https://www.ipa.go.jp/shiken/mondai-kaiotu/gmcbt80000008smf-att/2022r04a_sc_pm2_ans.pdf"
     },
     {
       id: "r04h",
+      short: "令和4春",
       label: "令和4年度 春期｜午後II",
       question: "https://www.ipa.go.jp/shiken/mondai-kaiotu/gmcbt80000009sgk-att/2022r04h_sc_pm2_qs.pdf",
       answer: "https://www.ipa.go.jp/shiken/mondai-kaiotu/gmcbt80000009sgk-att/2022r04h_sc_pm2_ans.pdf"
     },
     {
       id: "r03a",
+      short: "令和3秋",
       label: "令和3年度 秋期｜午後II",
       question: "https://www.ipa.go.jp/shiken/mondai-kaiotu/gmcbt8000000apad-att/2021r03a_sc_pm2_qs.pdf",
       answer: "https://www.ipa.go.jp/shiken/mondai-kaiotu/gmcbt8000000apad-att/2021r03a_sc_pm2_ans.pdf"
     },
     {
       id: "r03h",
+      short: "令和3春",
       label: "令和3年度 春期｜午後II",
       question: "https://www.ipa.go.jp/shiken/mondai-kaiotu/gmcbt8000000d5ru-att/2021r03h_sc_pm2_qs.pdf",
       answer: "https://www.ipa.go.jp/shiken/mondai-kaiotu/gmcbt8000000d5ru-att/2021r03h_sc_pm2_ans.pdf"
     },
     {
       id: "r02o",
+      short: "令和2",
       label: "令和2年度 10月｜午後II",
       question: "https://www.ipa.go.jp/shiken/mondai-kaiotu/gmcbt8000000d05l-att/2020r02o_sc_pm2_qs.pdf",
       answer: "https://www.ipa.go.jp/shiken/mondai-kaiotu/gmcbt8000000d05l-att/2020r02o_sc_pm2_ans.pdf"
     },
     {
       id: "r01a",
+      short: "令和元秋",
       label: "令和元年度 秋期｜午後II",
       question: "https://www.ipa.go.jp/shiken/mondai-kaiotu/gmcbt8000000dict-att/2019r01a_sc_pm2_qs.pdf",
       answer: "https://www.ipa.go.jp/shiken/mondai-kaiotu/gmcbt8000000dict-att/2019r01a_sc_pm2_ans.pdf"
@@ -392,27 +426,25 @@
   ];
 
   const examSelect = document.getElementById("examSelect");
-  const pdfFrame = document.getElementById("pdfFrame");
   const openPdf = document.getElementById("openPdf");
   const openAnswer = document.getElementById("openAnswer");
-  const pdfTitle = document.getElementById("pdfTitle");
-
   const questionId = document.getElementById("questionId");
-  const loadQuestion = document.getElementById("loadQuestion");
+  const switchQuestionBtn = document.getElementById("switchQuestion");
   const answer = document.getElementById("answer");
   const memo = document.getElementById("memo");
   const saveState = document.getElementById("saveState");
   const scoreButtons = [...document.querySelectorAll(".score")];
   const clearCurrent = document.getElementById("clearCurrent");
-  const stats = document.getElementById("stats");
+  const history = document.getElementById("history");
+  const historyCount = document.getElementById("historyCount");
 
   let currentExam = EXAMS[0];
   let currentQuestion = "問1";
-  let saveTimer;
+  let saveTimer = null;
+  let loading = false;
 
-  function storageKey() {
-    const q = currentQuestion.trim() || "未分類";
-    return `sekispe:${currentExam.id}:${q}`;
+  function storageKey(examId = currentExam.id, q = currentQuestion) {
+    return `sekispe:${examId}:${q.trim() || "未分類"}`;
   }
 
   function lastQuestionKey(examId) {
@@ -428,26 +460,34 @@
     });
   }
 
-  function selectExam(id) {
+  function selectExam(id, loadLastQuestion = true) {
     currentExam = EXAMS.find(x => x.id === id) || EXAMS[0];
-
-    localStorage.setItem("sekispe:lastExam", currentExam.id);
     examSelect.value = currentExam.id;
-
-    pdfFrame.src = currentExam.question;
     openPdf.href = currentExam.question;
     openAnswer.href = currentExam.answer;
-    pdfTitle.textContent = currentExam.label + " / 問題PDF";
 
-    currentQuestion = localStorage.getItem(lastQuestionKey(currentExam.id)) || "問1";
+    localStorage.setItem("sekispe:lastExam", currentExam.id);
+
+    if (loadLastQuestion) {
+      currentQuestion = localStorage.getItem(lastQuestionKey(currentExam.id)) || "問1";
+    }
+
     questionId.value = currentQuestion;
-
     loadSaved();
-    updateStats();
+    renderHistory();
+  }
+
+  function readSaved(examId, q) {
+    try {
+      return JSON.parse(localStorage.getItem(storageKey(examId, q)) || "{}");
+    } catch {
+      return {};
+    }
   }
 
   function loadSaved() {
-    const saved = JSON.parse(localStorage.getItem(storageKey()) || "{}");
+    loading = true;
+    const saved = readSaved(currentExam.id, currentQuestion);
 
     answer.value = saved.answer || "";
     memo.value = saved.memo || "";
@@ -459,24 +499,50 @@
           minute: "2-digit"
         })}`
       : "未保存";
+
+    loading = false;
+  }
+
+  function currentScore() {
+    const active = scoreButtons.find(b => b.classList.contains("active"));
+    return active ? Number(active.dataset.score) : null;
+  }
+
+  function hasContent() {
+    return (
+      answer.value.trim() !== "" ||
+      memo.value.trim() !== "" ||
+      currentScore() !== null
+    );
   }
 
   function save() {
-    const active = scoreButtons.find(b => b.classList.contains("active"));
+    if (loading) return;
+
+    const key = storageKey();
+    const existing = readSaved(currentExam.id, currentQuestion);
+
+    if (!hasContent() && !existing.updatedAt) {
+      saveState.textContent = "未保存";
+      return;
+    }
 
     const data = {
       answer: answer.value,
       memo: memo.value,
-      score: active ? Number(active.dataset.score) : null,
+      score: currentScore(),
       updatedAt: Date.now()
     };
 
-    localStorage.setItem(storageKey(), JSON.stringify(data));
+    localStorage.setItem(key, JSON.stringify(data));
+    localStorage.setItem(lastQuestionKey(currentExam.id), currentQuestion);
+
     saveState.textContent = "保存済み";
-    updateStats();
+    renderHistory();
   }
 
   function autosave() {
+    if (loading) return;
     saveState.textContent = "保存中…";
     clearTimeout(saveTimer);
     saveTimer = setTimeout(save, 250);
@@ -503,35 +569,108 @@
     loadSaved();
   }
 
-  function updateStats() {
-    const prefix = `sekispe:${currentExam.id}:`;
+  function scoreText(score) {
+    if (score === 2) return { mark: "○", cls: "good" };
+    if (score === 1) return { mark: "△", cls: "mid" };
+    if (score === 0) return { mark: "×", cls: "bad" };
+    return { mark: "—", cls: "none" };
+  }
 
-    let good = 0;
-    let mid = 0;
-    let bad = 0;
-    let total = 0;
+  function getAllHistory() {
+    const items = [];
 
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
-      if (!key || !key.startsWith(prefix)) continue;
+      if (!key || !key.startsWith("sekispe:")) continue;
+      if (key.startsWith("sekispe:last")) continue;
 
+      const parts = key.split(":");
+      if (parts.length < 3) continue;
+
+      const examId = parts[1];
+      const q = parts.slice(2).join(":");
+      const exam = EXAMS.find(x => x.id === examId);
+      if (!exam) continue;
+
+      let data;
       try {
-        const data = JSON.parse(localStorage.getItem(key));
+        data = JSON.parse(localStorage.getItem(key));
+      } catch {
+        continue;
+      }
 
-        if (data.score === 2) good++;
-        if (data.score === 1) mid++;
-        if (data.score === 0) bad++;
-        if ([0, 1, 2].includes(data.score)) total++;
-      } catch (_) {}
+      if (
+        !data ||
+        (
+          !String(data.answer || "").trim() &&
+          !String(data.memo || "").trim() &&
+          ![0,1,2].includes(data.score)
+        )
+      ) continue;
+
+      items.push({
+        examId,
+        exam,
+        question: q,
+        answer: data.answer || "",
+        memo: data.memo || "",
+        score: data.score,
+        updatedAt: data.updatedAt || 0
+      });
     }
 
-    if (!total) {
-      stats.textContent = "採点済み：0問";
+    return items.sort((a, b) => b.updatedAt - a.updatedAt);
+  }
+
+  function renderHistory() {
+    const items = getAllHistory();
+    history.innerHTML = "";
+    historyCount.textContent = `${items.length}件`;
+
+    if (!items.length) {
+      history.innerHTML = '<div class="empty">まだ回答履歴はありません。</div>';
       return;
     }
 
-    stats.textContent =
-      `採点済み：${total}問　○ ${good}　△ ${mid}　× ${bad}　正解率 ${Math.round(good / total * 100)}%`;
+    items.forEach(item => {
+      const s = scoreText(item.score);
+
+      const button = document.createElement("button");
+      button.className = "history-item";
+      button.type = "button";
+
+      const main = document.createElement("div");
+      main.className = "history-main";
+
+      const title = document.createElement("div");
+      title.className = "history-title";
+      title.textContent = `${item.exam.short}　${item.question}`;
+
+      const sub = document.createElement("div");
+      sub.className = "history-sub";
+      const preview = item.answer.trim() || item.memo.trim() || "保存済み";
+      sub.textContent = preview.replace(/\s+/g, " ").slice(0, 70);
+
+      const badge = document.createElement("span");
+      badge.className = `badge ${s.cls}`;
+      badge.textContent = s.mark;
+
+      main.appendChild(title);
+      main.appendChild(sub);
+      button.appendChild(main);
+      button.appendChild(badge);
+
+      button.addEventListener("click", () => {
+        save();
+        currentQuestion = item.question;
+        selectExam(item.examId, false);
+        questionId.value = currentQuestion;
+        loadSaved();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+
+      history.appendChild(button);
+    });
   }
 
   examSelect.addEventListener("change", () => {
@@ -539,7 +678,7 @@
     selectExam(examSelect.value);
   });
 
-  loadQuestion.addEventListener("click", switchQuestion);
+  switchQuestionBtn.addEventListener("click", switchQuestion);
 
   questionId.addEventListener("keydown", e => {
     if (e.key === "Enter") switchQuestion();
@@ -557,11 +696,13 @@
   });
 
   clearCurrent.addEventListener("click", () => {
-    if (!confirm(`「${currentQuestion}」の保存内容を削除しますか？`)) return;
+    if (!confirm(`「${currentExam.short} ${currentQuestion}」の保存内容を削除しますか？`)) {
+      return;
+    }
 
     localStorage.removeItem(storageKey());
     loadSaved();
-    updateStats();
+    renderHistory();
   });
 
   window.addEventListener("beforeunload", save);
